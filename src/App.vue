@@ -5,6 +5,9 @@
 </template>
 
 <style lang="scss">
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/bootstrap-vue/src/index.scss';
+
 * {
   margin: 0;
   padding: 0;
@@ -18,7 +21,7 @@
 input[type=text], button {
   border-radius: 0px;
   border: solid black 2px;
-  height: 2rem;
+  // height: 2rem;
   text-align: center;
 }
 
