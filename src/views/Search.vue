@@ -1,49 +1,114 @@
 <template>
-  <section id="search">
-    <label for="searchInput"> <strong>Github</strong> <em>Search</em> </label>
-    <div class="input-group">
-      <input type="text" id="searchInput" />
-      <button class="icon-search">
-        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
-          <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
-        </svg>
-      </button>
+  <section id="search" class="container-flex d-flex flex-column align-items-center justify-content-center" >
+    <div class="row">
+      <div class="col">
+        <span class="h1 custom-title"> <strong>Github</strong> <em>Search</em> </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control custom-input"
+            placeholder="Username"
+            aria-label="Username"
+            aria-describedby="search-addon"
+            @keypress.enter="search"
+            v-model="query"
+          />
+          <div class="input-group-append custom-append" @click="search">
+            <span class="input-group-text" id="search-addon">
+              <b-icon icon="search" />
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
 export default {
-
+  data () {
+    return {
+      query: ''
+    }
+  },
+  computed: {
+    loading () {
+      return this.$store.getters.loading
+    }
+  },
+  beforeCreate () {
+    this.$store.commit('setLoading', true)
+  },
+  mounted () {
+    this.$store.commit('setLoading', false)
+  },
+  methods: {
+    search () {
+      this.$store.commit('toggleLoading')
+      this.$router.push(`../list/${this.query}`)
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,700;1,300;1,400;1,700&display=swap');
+  $sm-break: 540px;
+  $md-break: 720px;
+  $xl-break: 1440px;
 
   #search {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
+  }
 
-    > label {
-      font-family: 'Roboto Mono', monospace;
-      font-style: normal;
-      color: black;
+  .custom-title {
+    font-family: 'Roboto Mono', monospace;
+    font-style: normal;
+    color: black;
+  }
 
-      font-size: 4rem;
-      // line-height: 75px;
+  .custom-append {
+    border-radius: 0px;
+    border: solid black thin;
+    cursor: pointer;
 
-      > em {
-        font-weight: 300;
+    > .input-group-text {
+      background-color: black;
+      color: white;
+      border-radius: 0px;
+      border: solid black thin;;
+
+      &:hover {
+        // border-top: solid white 2px;
+        border: solid white thin;
       }
+    }
+
+  }
+
+  .custom-input {
+
+    width: 40vw;
+    &:focus {
+      box-shadow: none;
+      border-color: black;
+      font-weight: bold;
     }
   }
 
-  #searchInput {
-    min-width: 41vw;
+  @media (max-width: $md-break) {
+    .custom-input {
+      width: 80vw;
+    }
+  }
+
+  @media (min-width: $xl-break) {
+    .custom-input {
+      width: 30vw;
+    }
   }
 </style>
