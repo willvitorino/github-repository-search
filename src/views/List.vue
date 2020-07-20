@@ -1,12 +1,12 @@
 <template>
   <section id="list" class="container-fluid">
-    <div class="row border-bottom border-dark py-2 mb-3">
+    <div class="row row-cols-2 row-cols-sm-2 border-bottom border-dark py-2 mb-3">
       <div class="col text-left">
         <span class="h3 custom-title" @click="toHome" >
           <strong>Github</strong> <em>Search</em>
         </span>
       </div>
-      <div class="col">
+      <div class="col d-sm-block d-none">
         <div class="input-group d-flex flex-row justify-content-end">
           <input
             type="text"
@@ -26,7 +26,7 @@
       </div>
     </div>
     <!--  -->
-    <div class="row d-flex justify-content-around">
+    <div v-if="result.items.length" class="row d-flex justify-content-around">
       <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 text-center" style="min-width: 20%" v-for="user in result.items" :key="user.id">
         <b-card tag="article" body-class="p-1" class="rounded-0 pointer my-3 p-0" @click="toDetail(user.login)" >
           <b-card-header class="bg-dark text-light rounded-0">
@@ -39,8 +39,13 @@
         </b-card>
       </div>
     </div>
+    <div v-else class="row mt-5">
+      <div class="col text-center">
+        <span class="h1 font-italic">Nenhum resultado encontrado.</span>
+      </div>
+    </div>
     <!-- Paginação -->
-    <div class="d-flex flex-row justify-content-end mb-3" >
+    <div v-if="pages > 1" class="d-flex flex-row justify-content-end mb-3" >
       <b-button-toolbar key-nav aria-label="Toolbar with button groups">
         <b-button-group>
           <button class="btn btn-sm bg-dark text-white rounded-0" @click="setPage(1)" >
@@ -84,7 +89,7 @@ export default {
   computed: {
     pages () {
       const max = parseInt(this.result.total_count / 30)
-      return max <= 100 ? max : 100
+      return max <= 100 ? max || 1 : 100
     }
   },
   created () {
@@ -167,9 +172,6 @@ export default {
     box-shadow: none;
     border-color: black;
     font-weight: bold;
-  }
-  .bg-dark {
-    background-color: black !important;
   }
   .big-border {
     border-width: thick;
