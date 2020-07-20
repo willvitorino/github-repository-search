@@ -13,6 +13,13 @@ const routes = [
     path: '/list',
     name: 'list',
     component: () => import('../views/List.vue'),
+    beforeEnter: (to, from, next) => {
+      if (to.params.query) {
+        next()
+      } else {
+        next(from.path)
+      }
+    },
     children: [{
       path: ':query'
     }]
@@ -21,8 +28,15 @@ const routes = [
     path: '/detail',
     name: 'detail',
     component: () => import('../views/Detail.vue'),
+    beforeEnter: (to, from, next) => {
+      if (to.params.login) {
+        next()
+      } else {
+        next(from.path)
+      }
+    },
     children: [{
-      path: ':id'
+      path: ':login'
     }]
   },
   {
