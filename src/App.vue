@@ -53,4 +53,7 @@ button {
 .pointer {
   cursor: pointer;
 }
+.bg-dark {
+  background-color: black !important;
+}
 </style>
