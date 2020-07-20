@@ -28,7 +28,7 @@
     <!--  -->
     <div class="row d-flex justify-content-around">
       <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 text-center" style="min-width: 20%" v-for="user in result.items" :key="user.id">
-        <b-card tag="article" body-class="p-1" class="rounded-0 pointer my-3 p-0" @click="toDetail(user.id)" >
+        <b-card tag="article" body-class="p-1" class="rounded-0 pointer my-3 p-0" @click="toDetail(user.login)" >
           <b-card-header class="bg-dark text-light rounded-0">
             <span class="flex-nowrap font-weight-bold">{{ user.login }}</span>
           </b-card-header>
@@ -51,7 +51,7 @@
           </button>
         </b-button-group>
         <b-button-group class="mx-1">
-          <button class="btn btn-sm btn-outline-dark rounded-0" > {{ params.page }} </button>
+          <button class="btn btn-sm btn-outline-dark rounded-0" > {{ params.page }} de {{ pages }} </button>
         </b-button-group>
         <b-button-group>
           <button class="btn btn-sm bg-dark text-white rounded-0" @click="setPage(params.page + 1)" >
@@ -83,7 +83,8 @@ export default {
   },
   computed: {
     pages () {
-      return parseInt(this.result.total_count / 30)
+      const max = parseInt(this.result.total_count / 30)
+      return max <= 100 ? max : 100
     }
   },
   created () {
@@ -97,6 +98,7 @@ export default {
   mounted () {
     const { query } = this.$route.params
     if (query) {
+      this.params.page = 1
       this.init()
     }
   },
@@ -109,6 +111,7 @@ export default {
           q: this.query,
           sort: 'repositories',
           order: 'desc',
+          per_page: 30,
           page
         }
       }).then(res => {
@@ -125,8 +128,8 @@ export default {
     toHome () {
       this.$router.push({ name: 'search' })
     },
-    toDetail (id) {
-      this.$router.push(`/detail/${id}`)
+    toDetail (username) {
+      this.$router.push(`/detail/${username}`)
     },
     setPage (page) {
       if (page < 1) {
