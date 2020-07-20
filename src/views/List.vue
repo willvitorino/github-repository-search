@@ -89,18 +89,11 @@ export default {
   },
   created () {
     const { query } = this.$route.params
-    if (!query) {
-      this.toHome()
-    } else {
-      this.query = query
-    }
+    this.query = query
   },
   mounted () {
-    const { query } = this.$route.params
-    if (query) {
-      this.params.page = 1
-      this.init()
-    }
+    this.params.page = 1
+    this.init()
   },
   methods: {
     init () {
