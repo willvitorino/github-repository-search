@@ -9,7 +9,7 @@
     </div>
     <div class="row mb-2">
       <div class="col text-center d-flex flex-column justify-content-center align-items-center">
-        <span class="h3"> {{ state.name }} </span>
+        <a :src="state.html_url" class="h3 pointer"> {{ state.name }} </a>
         <b-avatar :src="state.avatar_url" size="10rem"></b-avatar>
       </div>
     </div>
@@ -29,7 +29,7 @@
           <b-card-body ref="cardBody" class="text-center d-flex flex-column justify-content-between" :style="style.body" >
             <p v-if="repo.description"> {{ repo.description }} </p>
             <p v-else> Sem Descrição </p>
-            <button @click="openRepo(repo)" >Ver Mais</button>
+            <button @click="openURL(repo.html_url)" >Ver Mais</button>
           </b-card-body>
           <b-card-footer class="d-flex justify-content-between" >
             <span>
@@ -115,15 +115,15 @@ export default {
     calcHeights () {
       // Height dos Bodies
       const headerHeight = Math.max(...this.$refs.cardHeader.map(el => el.clientHeight))
-      // console.log(headerHeight)
       this.style.header.minHeight = `${headerHeight}px`
 
       // Height dos Bodies
       const bodyHeight = Math.max(...this.$refs.cardBody.map(el => el.clientHeight))
       this.style.body.minHeight = `${bodyHeight}px` || '100px'
     },
-    openRepo (repo) {
-      window.open(repo.html_url, '_blank')
+
+    openURL (url) {
+      window.open(url, '_blank')
     }
   }
 }
